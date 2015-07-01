@@ -7,3 +7,16 @@ repositories {
 dependencies {
 	compile 'org.codehaus.groovy:groovy-all:2.4.3'
 }
+
+task(buildFeeds, dependsOn: 'classes', type: JavaExec) {
+	main = 'com.deigote.feedMyFiles.FeedMyFiles'
+	classpath = sourceSets.main.runtimeClasspath
+
+	def requiredArguments = ['rootPath']
+	args = requiredArguments.collectEntries { requiredArgument ->
+		[(requiredArgument): project.properties[requiredArgument]]
+	}.each { argName, argValue ->
+	//	assert argValue, "Argument <${argName}> missing! Usage: ./gradlew buildFeeds " + requiredArguments.collect { "-P${it}=${it}Value" }.join(' ')
+	}.values().findAll().sort { requiredArguments.indexOf(it) }
+}
+
