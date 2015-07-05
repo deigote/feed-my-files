@@ -12,11 +12,13 @@ task(buildFeeds, dependsOn: 'classes', type: JavaExec) {
 	main = 'com.deigote.feedMyFiles.FeedMyFiles'
 	classpath = sourceSets.main.runtimeClasspath
 
-	def requiredArguments = ['rootPath']
-	args = requiredArguments.collectEntries { requiredArgument ->
+	def argumentNames = ['rootPath', 'rss2File', 'atomFile']
+	def arguments = argumentNames.collectEntries { requiredArgument ->
 		[(requiredArgument): project.properties[requiredArgument]]
-	}.each { argName, argValue ->
-	//	assert argValue, "Argument <${argName}> missing! Usage: ./gradlew buildFeeds " + requiredArguments.collect { "-P${it}=${it}Value" }.join(' ')
-	}.values().findAll().sort { requiredArguments.indexOf(it) }
+	}.sort { argumentNames.indexOf(it) }.values().collect { it ?: '' }
+	args = arguments
+	systemProperty 'usage.message', "Usage: ./gradlew buildFeeds " + argumentNames.collect {
+		"-P${it}=${it}Value"
+	}.join(' ')
 }
 
