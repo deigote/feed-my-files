@@ -12,7 +12,7 @@ rss(version:"2.0") {
 				newLine()
 				guid "${entry.link}"
 				newLine()
-				pubDate "${entry.rssFullDate}"
+				pubDate "${entry.date}"
 				newLine()
 				description """[CDATA[
 Directorio: <a href="${entry.dirLink}">${entry.dirLink}</a><br />

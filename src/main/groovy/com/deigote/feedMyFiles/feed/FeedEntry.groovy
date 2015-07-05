@@ -2,18 +2,18 @@ package com.deigote.feedMyFiles.feed
 
 import java.time.Instant
 
-class RssFeedEntry {
+class FeedEntry {
 	final String name, link, dirLink
-	final Instant rssFullDate
+	final Instant date
 
-	RssFeedEntry(String name, String link, String dirLink, rssFullDate) {
+	FeedEntry(String name, String link, String dirLink, date) {
 		this.name = name
 		this.link = link
 		this.dirLink = dirLink
-		this.rssFullDate = rssFullDate
+		this.date = date
 	}
 
-	private RssFeedEntry(Map attrs) {
+	private FeedEntry(Map attrs) {
 		throw new UnsupportedOperationException()
 	}
 }
