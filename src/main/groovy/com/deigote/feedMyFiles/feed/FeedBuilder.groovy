@@ -6,28 +6,27 @@ import groovy.text.markup.TemplateConfiguration
 
 import java.time.Instant
 
+import static java.nio.charset.StandardCharsets.UTF_8
+
 abstract class FeedBuilder {
 
-	final Writer buildFeed(List<FileEntry> files, Writer output) {
+	final Writer buildFeed(Writer output, List<FileEntry> files, String urlPrefix = null) {
+		assert urlPrefix
 		new MarkupTemplateEngine(buildTemplateConfiguration()).createTemplate(getTemplateUrl()).make([
 			lastBuildDate: Instant.now(),
-			entries: files.collect(buildFeedEntry)
+			entries: buildFeedEntries(files, urlPrefix)
 		]).writeTo(output)
 	}
 
-	private static Closure<FeedEntry> buildFeedEntry = { FileEntry fileEntry ->
-		new FeedEntry(
-			fileEntry.path.fileName.toString(),
-			fileEntry.path.toString(),
-			fileEntry.path.parent.toString(),
-			fileEntry.lastModified
-		)
+	private Collection<FeedEntry> buildFeedEntries(Collection<FileEntry> fileEntries, String urlPrefix) {
+		fileEntries.collect { FeedEntry.from(it, urlPrefix) }
 	}
 
 	private TemplateConfiguration buildTemplateConfiguration() {
 		TemplateConfiguration configuration = new TemplateConfiguration()
 		configuration.setAutoNewLine(true)
 		configuration.setAutoIndent(true)
+		configuration.setDeclarationEncoding(UTF_8.toString())
 		return configuration
 	}
 

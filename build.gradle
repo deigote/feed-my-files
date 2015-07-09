@@ -12,7 +12,7 @@ task(buildFeeds, dependsOn: 'classes', type: JavaExec) {
 	main = 'com.deigote.feedMyFiles.FeedMyFiles'
 	classpath = sourceSets.main.runtimeClasspath
 
-	def argumentNames = ['rootPath', 'rss2File', 'atomFile']
+	def argumentNames = ['rootPath', 'rss2File', 'atomFile', 'urlPrefix']
 	def arguments = argumentNames.collectEntries { requiredArgument ->
 		[(requiredArgument): project.properties[requiredArgument]]
 	}.sort { argumentNames.indexOf(it) }.values().collect { it ?: '' }
