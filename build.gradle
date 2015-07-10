@@ -6,17 +6,20 @@ repositories {
 
 dependencies {
 	compile 'org.codehaus.groovy:groovy-all:2.4.3'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.3'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.3'
 }
 
 task(buildFeeds, dependsOn: 'classes', type: JavaExec) {
 	main = 'com.deigote.feedMyFiles.FeedMyFiles'
 	classpath = sourceSets.main.runtimeClasspath
 
-	def argumentNames = ['rootPath', 'rss2File', 'atomFile', 'urlPrefix']
+	def argumentNames = ['rootPath', 'rss2File', 'atomFile', 'urlPrefix', 'filePrefixToIgnoreInUrl']
 	def arguments = argumentNames.collectEntries { requiredArgument ->
 		[(requiredArgument): project.properties[requiredArgument]]
 	}.sort { argumentNames.indexOf(it) }.values().collect { it ?: '' }
 	args = arguments
+
 	systemProperty 'usage.message', "Usage: ./gradlew buildFeeds " + argumentNames.collect {
 		"-P${it}=${it}Value"
 	}.join(' ')
