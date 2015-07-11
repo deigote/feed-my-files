@@ -6,6 +6,8 @@ import groovy.transform.ToString
 import java.nio.file.Path
 import java.time.Instant
 
+import static java.nio.charset.StandardCharsets.UTF_8
+
 @ToString(includeNames = true, includePackage = false)
 class FeedEntry {
 	final String name
@@ -24,9 +26,11 @@ class FeedEntry {
 	}
 
 	private static URI prepareFileUri(Path path, String urlPrefix, String filePrefixToIgnoreInUrl) {
-		urlPrefix ?
-			new URI(urlPrefix + path.toString().replaceFirst(filePrefixToIgnoreInUrl ?: '', '')) :
-			path.toUri()
+		urlPrefix ? (urlPrefix.endsWith('/') ? urlPrefix : urlPrefix.concat('/')).concat(
+			path.toString().replaceFirst(filePrefixToIgnoreInUrl ?: '', '').tokenize('/').collect {
+				URLEncoder.encode(it, UTF_8.toString())
+			}.join('/')
+		).toURI() : path.toUri()
 	}
 
 	private FeedEntry(String name, URI link, URI dirLink, Instant date) {
