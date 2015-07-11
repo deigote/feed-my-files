@@ -19,7 +19,8 @@ abstract class FeedBuilder {
 		assert urlPrefix
 		new MarkupTemplateEngine(buildTemplateConfiguration()).createTemplate(getTemplateUrl()).make([
 			lastBuildDate: Instant.now(),
-			entries: buildFeedEntries(files, urlPrefix, filePrefixToIgnoreInUrl)
+			entries: buildFeedEntries(files, urlPrefix, filePrefixToIgnoreInUrl),
+			dateFormatter: { formatDate(it) }
 		]).writeTo(output)
 	}
 
@@ -44,5 +45,6 @@ abstract class FeedBuilder {
 	}
 
 	protected abstract String getTemplateName()
+	protected abstract String formatDate(Instant instant)
 
 }

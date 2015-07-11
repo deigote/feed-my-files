@@ -1,9 +1,15 @@
 rss(version:"2.0") {
 	channel {
-		title 'Seedbox lastest downloads'
+		title "Feed from files"
+		newLine()
+		description "Generated with FeedMyFiles"
+		newLine()
 		link 'https://sb.deigote.com/feed'
-		lastBuildDate "$lastBuildDate"
+		newLine()
+		lastBuildDate { yieldUnescaped("${dateFormatter(lastBuildDate)}") }
+		newLine()
 		language 'es-ES'
+		newLine()
 		entries.each { entry ->
 			item {
 				title "<![CDATA['${entry.name}']]>"
@@ -12,14 +18,8 @@ rss(version:"2.0") {
 				newLine()
 				guid "${entry.link}"
 				newLine()
-				pubDate "${entry.date}"
-				newLine()
-				description """[CDATA[
-Directorio: <a href="${entry.dirLink}">${entry.dirLink}</a><br />
-Fichero: <a href="${entry.link}">${entry.link}</a>
-]]"""
+				pubDate { yieldUnescaped("${dateFormatter(entry.date)}") }
 			}
-			newLine()
 		}
 	}
 }
