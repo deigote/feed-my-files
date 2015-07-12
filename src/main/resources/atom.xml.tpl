@@ -19,7 +19,7 @@ feed(xmlns: "http://www.w3.org/2005/Atom") {
 	}
 	entries.each { feedEntry ->
 		entry {
-			title "<![CDATA['${feedEntry.name}']]>"
+			title "<![CDATA[${feedEntry.name}]]>"
 			newLine()
 			link(href: feedEntry.link, rel: "self")
 			newLine()

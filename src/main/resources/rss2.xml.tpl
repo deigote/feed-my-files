@@ -12,7 +12,7 @@ rss(version:"2.0") {
 		newLine()
 		entries.each { entry ->
 			item {
-				title "<![CDATA['${entry.name}']]>"
+				title "<![CDATA[${entry.name}]]>"
 				newLine()
 				link entry.link
 				newLine()
