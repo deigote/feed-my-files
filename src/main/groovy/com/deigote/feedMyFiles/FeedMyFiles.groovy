@@ -23,23 +23,32 @@ class FeedMyFiles {
 				args[5] ?: 'Feed My Files', args[6] ?: 'Feed generated with Feed My Files',
 				args[7] ?:'https://github.com/deigote/feed-my-files'
 			))
+			.fileExtensions((args[8] ?: '').tokenize(','))
 			.build()
 		)
 	}
 
 	private buildFeeds(Config config) {
 		log.info "Building feeds with config ${config}"
-		List<FileEntry> files = FilesCollector.collectFromPath(config.rootPath).sortedByLastModifiedFiles
 		[
 			(RssBuilder.instance): config.rss2Output,
 			(AtomBuilder.instance): config.atomOutput
 		].findAll { it.value.present }.each { FeedBuilder builder, Optional<File> output ->
 			output.get().withWriter { outputWriter ->
 				builder.buildFeed(
-					outputWriter, config.feedAttrs, files, config.urlPrefix,
-					config.filePrefixToIgnoreInUrl
+					outputWriter, config.feedAttrs, prepareFilesToFeed(config),
+					config.urlPrefix, config.filePrefixToIgnoreInUrl
 				)
 			}
+		}
+	}
+
+	private List<FileEntry> prepareFilesToFeed(Config config) {
+		FilesCollector.collectFromPath(
+			config.rootPath, config.fileExtensions
+		).sortedByLastModifiedFiles.with { files ->
+			log.info "Found ${files.size()} files to feed"
+			files
 		}
 	}
 

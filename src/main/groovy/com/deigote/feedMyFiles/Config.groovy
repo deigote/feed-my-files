@@ -18,6 +18,7 @@ class Config {
 		urlPrefix,
 		filePrefixToIgnoreInUrl
 	FeedAttrs feedAttrs
+	Collection<String> fileExtensions
 
 	Optional<File> getRss2Output() {
 		getFileFromPossiblyEmptyPath(rss2OutputPath)

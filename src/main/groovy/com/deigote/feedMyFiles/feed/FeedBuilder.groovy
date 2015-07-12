@@ -30,7 +30,7 @@ abstract class FeedBuilder {
 		Collection<FileEntry> fileEntries, String urlPrefix, String filePrefixToIgnoreInUrl
 	) {
 		fileEntries.collect { FeedEntry.from(it, urlPrefix, filePrefixToIgnoreInUrl) }.each {
-			log.info "Built feed entry ${it}"
+			log.debug "Built feed entry ${it}"
 		}
 	}
 
