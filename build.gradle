@@ -6,6 +6,7 @@ repositories {
 
 dependencies {
 	compile 'org.codehaus.groovy:groovy-all:2.4.3'
+	compile 'commons-httpclient:commons-httpclient:3.1'
 	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.3'
 	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.3'
 }

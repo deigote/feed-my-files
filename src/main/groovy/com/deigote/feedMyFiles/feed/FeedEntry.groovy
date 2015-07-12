@@ -2,6 +2,7 @@ package com.deigote.feedMyFiles.feed
 
 import com.deigote.feedMyFiles.file.FileEntry
 import groovy.transform.ToString
+import org.apache.commons.httpclient.util.URIUtil
 
 import java.nio.file.Path
 import java.time.Instant
@@ -26,10 +27,10 @@ class FeedEntry {
 	}
 
 	private static URI prepareFileUri(Path path, String urlPrefix, String filePrefixToIgnoreInUrl) {
-		urlPrefix ? (urlPrefix.endsWith('/') ? urlPrefix : urlPrefix.concat('/')).concat(
-			path.toString().replaceFirst(filePrefixToIgnoreInUrl ?: '', '').tokenize('/').collect {
-				URLEncoder.encode(it, UTF_8.toString())
-			}.join('/')
+		urlPrefix ? URIUtil.encodePath(
+			(urlPrefix.endsWith('/') ? urlPrefix : urlPrefix.concat('/')).concat(
+				path.toString().replaceFirst(filePrefixToIgnoreInUrl ?: '', '')
+			), UTF_8.toString()
 		).toURI() : path.toUri()
 	}
 
