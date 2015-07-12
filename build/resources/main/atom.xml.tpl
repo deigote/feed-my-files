@@ -1,20 +1,20 @@
 xmlDeclaration()
 
 feed(xmlns: "http://www.w3.org/2005/Atom") {
-	title "${title}"
+	title 'Seedbox'
 	newLine()
-	subtitle "${description}"
+	subtitle 'Lastest downloads'
 	newLine()
-	link(href: "${link}", rel: "self")
+	link(href: "https://sb.deigote.com/feed/", rel: "self")
 	newLine()
 	id 'https://sb.deigote.com/feed'
 	newLine()
 	updated "$lastBuildDate"
 	newLine()
 	author {
-		name 'Feed My Files'
+		name 'Seedbox'
 		newLine()
-		email 'diego+feedMyFiles@toharia.com'
+		email 'seedbox@deigote.com'
 		newLine()
 	}
 	entries.each { feedEntry ->

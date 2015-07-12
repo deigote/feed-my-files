@@ -13,15 +13,17 @@ import static java.nio.charset.StandardCharsets.UTF_8
 abstract class FeedBuilder {
 
 	final Writer buildFeed(
-		Writer output, List<FileEntry> files, String urlPrefix = null,
+		Writer output, FeedAttrs feedAttrs, List<FileEntry> files, String urlPrefix = null,
 		String filePrefixToIgnoreInUrl = null
 	) {
 		assert urlPrefix
-		new MarkupTemplateEngine(buildTemplateConfiguration()).createTemplate(getTemplateUrl()).make([
-			lastBuildDate: Instant.now(),
-			entries: buildFeedEntries(files, urlPrefix, filePrefixToIgnoreInUrl),
-			dateFormatter: { formatDate(it) }
-		]).writeTo(output)
+		new MarkupTemplateEngine(buildTemplateConfiguration()).createTemplate(getTemplateUrl()).make(
+			[
+				lastBuildDate: Instant.now(),
+				entries: buildFeedEntries(files, urlPrefix, filePrefixToIgnoreInUrl),
+				dateFormatter: { formatDate(it) }
+			 ] << feedAttrs.asMap()
+		).writeTo(output)
 	}
 
 	private Collection<FeedEntry> buildFeedEntries(

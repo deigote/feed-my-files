@@ -1,5 +1,6 @@
 package com.deigote.feedMyFiles
 import com.deigote.feedMyFiles.feed.AtomBuilder
+import com.deigote.feedMyFiles.feed.FeedAttrs
 import com.deigote.feedMyFiles.feed.FeedBuilder
 import com.deigote.feedMyFiles.feed.RssBuilder
 import com.deigote.feedMyFiles.file.FileEntry
@@ -18,6 +19,10 @@ class FeedMyFiles {
 			.atomOutputPath(args[2])
 			.urlPrefix(args[3])
 			.filePrefixToIgnoreInUrl(args[4])
+			.feedAttrs(new FeedAttrs(
+				args[5] ?: 'Feed My Files', args[6] ?: 'Feed generated with Feed My Files',
+				args[7] ?:'https://github.com/deigote/feed-my-files'
+			))
 			.build()
 		)
 	}
@@ -30,7 +35,10 @@ class FeedMyFiles {
 			(AtomBuilder.instance): config.atomOutput
 		].findAll { it.value.present }.each { FeedBuilder builder, Optional<File> output ->
 			output.get().withWriter { outputWriter ->
-				builder.buildFeed(outputWriter, files, config.urlPrefix, config.filePrefixToIgnoreInUrl)
+				builder.buildFeed(
+					outputWriter, config.feedAttrs, files, config.urlPrefix,
+					config.filePrefixToIgnoreInUrl
+				)
 			}
 		}
 	}

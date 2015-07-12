@@ -1,5 +1,6 @@
 package com.deigote.feedMyFiles
 
+import com.deigote.feedMyFiles.feed.FeedAttrs
 import groovy.transform.ToString
 import groovy.transform.builder.Builder
 
@@ -16,6 +17,7 @@ class Config {
 		atomOutputPath,
 		urlPrefix,
 		filePrefixToIgnoreInUrl
+	FeedAttrs feedAttrs
 
 	Optional<File> getRss2Output() {
 		getFileFromPossiblyEmptyPath(rss2OutputPath)
