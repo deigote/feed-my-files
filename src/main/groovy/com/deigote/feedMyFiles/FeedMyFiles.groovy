@@ -30,13 +30,14 @@ class FeedMyFiles {
 
 	private buildFeeds(Config config) {
 		log.info "Building feeds with config ${config}"
+		List<FileEntry> filesToFeed = prepareFilesToFeed(config)
 		[
 			(RssBuilder.instance): config.rss2Output,
 			(AtomBuilder.instance): config.atomOutput
 		].findAll { it.value.present }.each { FeedBuilder builder, Optional<File> output ->
 			output.get().withWriter { outputWriter ->
 				builder.buildFeed(
-					outputWriter, config.feedAttrs, prepareFilesToFeed(config),
+					outputWriter, config.feedAttrs, filesToFeed,
 					config.urlPrefix, config.filePrefixToIgnoreInUrl
 				)
 			}
@@ -44,12 +45,12 @@ class FeedMyFiles {
 	}
 
 	private List<FileEntry> prepareFilesToFeed(Config config) {
-		FilesCollector.collectFromPath(
-			config.rootPath, config.fileExtensions
-		).sortedByLastModifiedFiles.with { files ->
-			log.info "Found ${files.size()} files to feed"
-			files
-		}
+		FilesCollector
+			.collectFromPath(config.rootPath, config.fileExtensions)
+			.sortedByLastModifiedFiles.with { files ->
+				log.info "Found ${files.size()} files to feed"
+				files
+			}
 	}
 
 }
