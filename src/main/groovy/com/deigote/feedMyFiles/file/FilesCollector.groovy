@@ -49,7 +49,7 @@ class FilesCollector implements FileVisitor<Path> {
 	}
 
 	List<FileEntry> getSortedByLastModifiedFiles() {
-		collectedFiles.sort { it.lastModified }
+		collectedFiles.sort { it.lastModified }.reverse()
 	}
 
 	static FilesCollector collectFromPath(
