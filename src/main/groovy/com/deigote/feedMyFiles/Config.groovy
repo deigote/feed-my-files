@@ -15,6 +15,7 @@ class Config {
 		rootDirectoryPath,
 		rss2OutputPath,
 		atomOutputPath,
+		htmlOutputPath,
 		urlPrefix,
 		filePrefixToIgnoreInUrl
 	FeedAttrs feedAttrs
@@ -26,6 +27,10 @@ class Config {
 
 	Optional<File> getAtomOutput() {
 		getFileFromPossiblyEmptyPath(atomOutputPath)
+	}
+
+	Optional<File> getHtmlOutput() {
+		getFileFromPossiblyEmptyPath(htmlOutputPath)
 	}
 
 	Path getRootPath() {
@@ -40,7 +45,7 @@ class Config {
 
 	Config validateOrFail() {
 		assert rootPath, "No root path provided! " + usageMessage
-		assert [rss2OutputPath, atomOutputPath].any { it }, "No output files provided! Please set at least one. " + usageMessage
+		assert [rss2OutputPath, atomOutputPath, htmlOutputPath].any { it }, "No output files provided! Please set at least one. " + usageMessage
 		assert !filePrefixToIgnoreInUrl || urlPrefix , "Parameter filePrefixToIgnoreInUrl can only be used in combination with filePrefixToIgnoreInUrl. " + usageMessage
 	}
 }

@@ -16,7 +16,7 @@ task(buildFeeds, dependsOn: 'classes', type: JavaExec) {
 	classpath = sourceSets.main.runtimeClasspath
 
 	def argumentNames = [
-		'rootPath', 'rss2File', 'atomFile', 'urlPrefix', 'filePrefixToIgnoreInUrl',
+		'rootPath', 'rss2File', 'atomFile', 'htmlFile', 'urlPrefix', 'filePrefixToIgnoreInUrl',
 		'feedTitle', 'feedDescription', 'feedLink', 'fileExtensionsToInclude'
 	]
 	def arguments = argumentNames.collectEntries { requiredArgument ->

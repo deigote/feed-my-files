@@ -2,6 +2,7 @@ package com.deigote.feedMyFiles
 import com.deigote.feedMyFiles.feed.AtomBuilder
 import com.deigote.feedMyFiles.feed.FeedAttrs
 import com.deigote.feedMyFiles.feed.FeedBuilder
+import com.deigote.feedMyFiles.feed.HtmlBuilder
 import com.deigote.feedMyFiles.feed.RssBuilder
 import com.deigote.feedMyFiles.file.FileEntry
 import com.deigote.feedMyFiles.file.FilesCollector
@@ -17,13 +18,14 @@ class FeedMyFiles {
 			.rootDirectoryPath(args[0])
 			.rss2OutputPath(args[1])
 			.atomOutputPath(args[2])
-			.urlPrefix(args[3])
-			.filePrefixToIgnoreInUrl(args[4])
+			.htmlOutputPath(args[3])
+			.urlPrefix(args[4])
+			.filePrefixToIgnoreInUrl(args[5])
 			.feedAttrs(new FeedAttrs(
-				args[5] ?: 'Feed My Files', args[6] ?: 'Feed generated with Feed My Files',
-				args[7] ?:'https://github.com/deigote/feed-my-files'
+				args[6] ?: 'Feed My Files', args[7] ?: 'Feed generated with Feed My Files',
+				args[8] ?:'https://github.com/deigote/feed-my-files'
 			))
-			.fileExtensions((args[8] ?: '').tokenize(','))
+			.fileExtensions((args[9] ?: '').tokenize(','))
 			.build()
 		)
 	}
@@ -33,7 +35,8 @@ class FeedMyFiles {
 		List<FileEntry> filesToFeed = prepareFilesToFeed(config)
 		[
 			(RssBuilder.instance): config.rss2Output,
-			(AtomBuilder.instance): config.atomOutput
+			(AtomBuilder.instance): config.atomOutput,
+			(HtmlBuilder.instance): config.htmlOutput
 		].findAll { it.value.present }.each { FeedBuilder builder, Optional<File> output ->
 			output.get().withWriter { outputWriter ->
 				builder.buildFeed(
@@ -50,7 +53,7 @@ class FeedMyFiles {
 			.sortedByLastModifiedFiles.with { files ->
 				log.info "Found ${files.size()} files to feed"
 				files
-			}
+			}.asImmutable()
 	}
 
 }
