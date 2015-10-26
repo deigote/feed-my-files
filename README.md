@@ -9,7 +9,7 @@ execution.
 
 ## How
 
-You can lunch Feed My Files using a command like the following from the project's directory:
+You can launch Feed My Files using a command like the following from the project's directory:
 
 ```
 ./gradlew buildFeeds \
